@@ -21,10 +21,12 @@ public interface UserServiceImpl {
 	
 	UserDTO getUserDTOByUsername(String username);
 	
-	boolean deleteUser(String userName);
+	List<UserDTO> deleteUser(String userName);
 	
 	User insertUser(User user);
 
 	List<UserDTO> getManagers();
+	
+	List<UserDTO> updateUsers(UserDTO user);
 	
 }

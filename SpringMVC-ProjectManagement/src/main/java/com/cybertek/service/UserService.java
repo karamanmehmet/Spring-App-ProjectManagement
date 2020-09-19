@@ -49,9 +49,10 @@ public class UserService implements UserServiceImpl {
 	}
 
 	@Override
-	public boolean deleteUser(String userName) {
-		// TODO Auto-generated method stub
-		return true;
+	public List<UserDTO> deleteUser(String username) {
+
+		return listOfUserDTO().stream().filter(x -> x.getUsername().equals(username) == false)
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -78,19 +79,31 @@ public class UserService implements UserServiceImpl {
 
 	@Override
 	public UserDTO getUserDTOByUsername(String username) {
-		
-		User user= userByUserName(username);
+
+		User user = userByUserName(username);
 		return DataGenerator.getUserDTOByUser(user);
 	}
 
 	@Override
 	public List<UserDTO> getManagers() {
-		
+
 		return DataGenerator.getManagers().stream().map(x -> {
 			return new UserDTO(x.getFirstname(), x.getLastname(), x.getUsername(), x.getPassword(), x.isEnabled(),
 					x.getPhone(), roleService.getRoleDTOById(x.getRole().getId()), x.getGender());
 
 		}).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<UserDTO> updateUsers(UserDTO user) {
+
+		List<UserDTO> list = listOfUserDTO().stream().filter(x -> x.getUsername().equals(user.getUsername()) == false)
+				.collect(Collectors.toList());
+		
+		list.add(user);
+
+		// TODO Auto-generated method stub
+		return list;
 	}
 
 }

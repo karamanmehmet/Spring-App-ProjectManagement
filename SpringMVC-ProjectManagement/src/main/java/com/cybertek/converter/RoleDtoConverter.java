@@ -10,14 +10,14 @@ import com.cybertek.implementation.RoleServiceImpl;
 
 @Component
 @ConfigurationPropertiesBinding
-public class RoleDtoConverter implements Converter<Object, RoleDTO> {
+public class RoleDtoConverter implements Converter<String, RoleDTO> {
 
 	@Autowired
 	RoleServiceImpl service;
 	
 
-	public RoleDTO convert(Object source) {
-		Integer id = Integer.parseInt((String)source);
+	public RoleDTO convert(String source) {
+		Integer id = Integer.parseInt(source);
 		RoleDTO object=new RoleDTO();
 		try {
 			object = service.getRoleDTOById(id);
