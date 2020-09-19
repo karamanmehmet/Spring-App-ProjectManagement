@@ -33,7 +33,7 @@ public class UserController {
 		this.roleService=roleService;
 	}
 
-	@GetMapping("")
+	@GetMapping
 	public String add(Model model) {
 
 		model.addAttribute("user", new UserDTO());
@@ -46,7 +46,7 @@ public class UserController {
 		return "admin/add";
 	}
 
-	@PostMapping("")
+	@PostMapping
 	public String insert(@ModelAttribute("user") UserDTO user, BindingResult result, Model model) {
 
 		List<UserDTO> users = userService.listOfUserDTO();
