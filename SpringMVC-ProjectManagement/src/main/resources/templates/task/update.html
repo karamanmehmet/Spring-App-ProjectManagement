@@ -34,7 +34,7 @@
 												<div class="col-sm-6 col-md-6 col-xs-12">
 													<div class="form-group">
 														<label for="manager">Project</label>
-														<select  name="projects"  class="custom-select" required readonly >
+														<select  name="project"  class="custom-select" required >
 														<option th:value="''" th:text="Select"></option>
 														<option th:each="p : ${projects}" th:value="${p.code}" th:text="${p.code +'-'+ p.name}" th:selected="${p.code} == ${task.project.code}"></option>
 														</select>
@@ -44,7 +44,7 @@
 											<div class="row">
 												<div class="col-sm-6 col-md-6 col-xs-12">
 													<div class="form-group">
-														<label for="user">Assigned Employee</label>
+														<label for="manager">Assigned Employee</label>
 														<select  name="user" class="custom-select" required >
 														<option th:value="''" th:text="Select"></option>
 														<option th:each="m : ${users}" th:value="${m.username}" th:text="${m.firstname +' '+ m.lastname}" th:selected="${m.username} == ${task.user.username}"></option>

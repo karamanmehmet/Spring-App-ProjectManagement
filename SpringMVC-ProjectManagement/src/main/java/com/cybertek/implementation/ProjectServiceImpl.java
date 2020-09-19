@@ -32,4 +32,12 @@ public interface ProjectServiceImpl {
 	Project getProjectByProjectCode(String projectcode);
 	
 	ProjectDTO getProjectDTOByProjectCode(String projectcode);
+	
+	List<ProjectDTO> updateProjects(ProjectDTO project);
+
+	List<ProjectDTO> deleteProjectDTO(String projectcode);
+
+	List<ProjectDTO> completeProject(String projectcode);
+
+	List<ProjectDTO> completeProjectByManager(UserDTO manager,String projectcode);
 }

@@ -54,11 +54,15 @@ public class DataGenerator {
 
 	}
 
+	
+	
 	public static User manager1 = new User(2, LocalDateTime.now(), 1, LocalDateTime.now().plusHours(1), 1, "Delisa",
 			"Norre", "T001@cybertek.com", "123", true, "8567412358", managerRole, Gender.Female);
 
 	public static User manager2 = new User(3, LocalDateTime.now(), 1, LocalDateTime.now().plusHours(1), 1, "Craig",
 			"Jark", "P001@cybertek.com", "123", true, "7777775566", managerRole, Gender.Male);
+	
+	
 
 	public static User user1 = new User(1, LocalDateTime.now(), 1, LocalDateTime.now().plusHours(1), 1, "John", "Kesy",
 			"admin@cybertek.com", "abc", true, "7459684532", adminRole, Gender.Male);
@@ -78,6 +82,9 @@ public class DataGenerator {
 	public static UserDTO activeUser = getUserDTOByUser(user1);
 	
 	public static UserDTO activeManager =getUserDTOByUser(manager1);
+	
+	
+	
 	
 	public static List<User> getUsers() {
 
@@ -104,6 +111,10 @@ public class DataGenerator {
 		return managers;
 	}
 
+	
+	
+	
+	
 	public static User getUserByUserId(long userId) {
 
 		User user = DataGenerator.getUsers().stream().filter(x -> x.getId() == userId).findFirst().get();

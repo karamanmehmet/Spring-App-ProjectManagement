@@ -29,13 +29,13 @@ public class ProjectController {
 
 	private ProjectServiceImpl projectService;
 
-	private UserServiceImpl adminService;
+	private UserServiceImpl userService;
 
 	@Autowired
-	public ProjectController(ProjectServiceImpl projectService, UserServiceImpl adminService) {
+	public ProjectController(ProjectServiceImpl projectService, UserServiceImpl userService) {
 
 		this.projectService = projectService;
-		this.adminService = adminService;
+		this.userService = userService;
 	}
 
 	@GetMapping
@@ -45,7 +45,7 @@ public class ProjectController {
 
 		model.addAttribute("projects", projects);
 		model.addAttribute("project", new ProjectDTO());
-		model.addAttribute("managers", adminService.getManagers());
+		model.addAttribute("managers", userService.getManagers());
 
 		return "project/add";
 	}
@@ -69,12 +69,10 @@ public class ProjectController {
 	public String edit(@PathVariable("projectcode") String projectcode, Model model) {
 
 		List<ProjectDTO> projects = projectService.getListOfProjectDTO();
+		ProjectDTO project = projectService.getProjectDTOByProjectCode(projectcode);
 
-		ProjectDTO p = DataGenerator.getProjectDTOByProject(projectService.getProjectByProjectCode(projectcode));
-
-		model.addAttribute("project", p);
-
-		model.addAttribute("managers", adminService.getManagers());
+		model.addAttribute("project", project);
+		model.addAttribute("managers", userService.getManagers());
 		model.addAttribute("projects", projects);
 
 		return "project/update";
@@ -84,14 +82,10 @@ public class ProjectController {
 	public String update(@PathVariable("projectcode") String projectcode,
 			@ModelAttribute("project") ProjectDTO projectDTO, BindingResult result, Model model) {
 
-		List<ProjectDTO> projects = projectService.getListOfProjectDTO().stream()
-				.filter(x -> x.getCode().equals(projectcode) == false).collect(Collectors.toList());
-
-		projects.add(projectService.update(projectDTO));
+		List<ProjectDTO> projects = projectService.updateProjects(projectDTO);
 
 		model.addAttribute("project", projectDTO);
-
-		model.addAttribute("managers", adminService.getManagers());
+		model.addAttribute("managers", userService.getManagers());
 		model.addAttribute("projects", projects);
 
 		return "project/update";
@@ -100,12 +94,11 @@ public class ProjectController {
 	@GetMapping("/delete/{projectcode}")
 	public String delete(@PathVariable("projectcode") String projectcode, Model model) {
 
-		List<ProjectDTO> projects = projectService.getListOfProjectDTO().stream()
-				.filter(x -> x.getCode().equals(projectcode) == false).collect(Collectors.toList());
+		List<ProjectDTO> projects = projectService.deleteProjectDTO(projectcode);
 
 		model.addAttribute("project", new ProjectDTO());
 
-		model.addAttribute("managers", adminService.getManagers());
+		model.addAttribute("managers", userService.getManagers());
 		model.addAttribute("projects", projects);
 
 		return "project/add";
@@ -114,22 +107,11 @@ public class ProjectController {
 	@GetMapping("/complete/{projectcode}")
 	public String complete(@PathVariable("projectcode") String projectcode, Model model) {
 
-		List<ProjectDTO> projects = projectService.getListOfProjectDTO().stream()
-				.filter(x -> x.getCode().equals(projectcode) == false).collect(Collectors.toList());
-
-		// Project p = projectService.getProjectByProjectCode(projectcode);
-
-		List<ProjectDTO> projects2 = projectService.getListOfProjectDTO().stream()
-				.filter(x -> x.getCode().equals(projectcode) == true).collect(Collectors.toList());
-
-		ProjectDTO pDto = projects2.get(0);
-		pDto.setStatus(Status.COMPLETED);
-
-		projects.add(pDto);
+		List<ProjectDTO> projects = projectService.completeProject(projectcode);
 
 		model.addAttribute("project", new ProjectDTO());
 
-		model.addAttribute("managers", adminService.getManagers());
+		model.addAttribute("managers", userService.getManagers());
 		model.addAttribute("projects", projects);
 
 		return "project/add";
@@ -154,19 +136,7 @@ public class ProjectController {
 		// Session dan aliniyor
 		UserDTO manager = DataGenerator.activeManager;
 
-		ProjectDTO updateDTO = projectService.getCountedListOfProjectDTO(manager).stream().filter(x -> x.getCode().equals(projectcode) == true).findFirst().get();
-				
-				
-				
-		
-		updateDTO.setStatus(Status.COMPLETED);
-
-		List<ProjectDTO> projects = projectService.getCountedListOfProjectDTO(manager).stream().filter(x -> x.getCode().equals(projectcode) == false)
-				.collect(Collectors.toList());
-				
-			
-
-		projects.add(updateDTO);
+		List<ProjectDTO> projects = projectService.completeProjectByManager(manager, projectcode);
 
 		model.addAttribute("projects", projects);
 

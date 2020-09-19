@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.cybertek.data.DataGenerator;
 import com.cybertek.dto.TaskDTO;
+import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.Project;
 import com.cybertek.entity.Task;
 import com.cybertek.entity.User;
 import com.cybertek.implementation.TaskServiceImpl;
+import com.cybertek.util.Status;
 
 @Service
 public class TaskService implements TaskServiceImpl {
@@ -77,6 +79,62 @@ public class TaskService implements TaskServiceImpl {
 	public List<Task> getListOfTask(Project projectCode) {
 		// TODO Auto-generated method stub
 		return DataGenerator.getTasks().stream().filter(x -> x.getProject().getCode().equals(projectCode.getCode()))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public TaskDTO getTaskDTOById(Long id) {
+		return getListOfTaskDTO().stream().filter(x -> x.getId() == id).findFirst().get();
+
+	}
+
+	@Override
+	public List<TaskDTO> updateTaskDTO(TaskDTO taskDTO) {
+
+		List<TaskDTO> tasks = DataGenerator.converterTaskDTO(getListOfTask()).stream()
+				.filter(x -> x.getId() != taskDTO.getId()).collect(Collectors.toList());
+
+		TaskDTO task = getTaskDTOById(taskDTO.getId());
+		task.setContent(taskDTO.getContent());
+		task.setTitle(taskDTO.getTitle());
+		task.setUser(taskDTO.getUser());
+
+		tasks.add(task);
+
+		return tasks;
+	}
+
+	@Override
+	public List<TaskDTO> deleteTask(Long id) {
+		return getListOfTaskDTO().stream().filter(x -> x.getId() != id).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<TaskDTO> getEmployeeTasks(UserDTO user) {
+		return getListOfTaskDTO().stream().filter(x -> x.getUser().equals(user) && x.getStatus() != Status.COMPLETED)
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<TaskDTO> updateTaskDTOForEmployee(UserDTO user, TaskDTO taskDTO) {
+		// TODO Auto-generated method stub
+		List<TaskDTO> tasks = getListOfTaskDTO().stream().filter(x -> x.getId() != taskDTO.getId()
+				&& x.getUser().equals(DataGenerator.activeUser) && x.getStatus() != Status.COMPLETED)
+				.collect(Collectors.toList());
+
+		TaskDTO task = getTaskDTOById(taskDTO.getId());
+
+		task.setStatus(taskDTO.getStatus());
+
+		tasks.add(task);
+
+		return tasks;
+	}
+
+	@Override
+	public List<TaskDTO> archiveList(UserDTO user) {
+		return getListOfTaskDTO().stream()
+				.filter(x -> x.getUser().equals(DataGenerator.activeUser) && x.getStatus() == Status.COMPLETED)
 				.collect(Collectors.toList());
 	}
 

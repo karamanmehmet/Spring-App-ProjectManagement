@@ -147,4 +147,51 @@ public class ProjectService implements ProjectServiceImpl {
 
 	}
 
+	@Override
+	public List<ProjectDTO> updateProjects(ProjectDTO project) {
+
+		List<ProjectDTO> projects = getListOfProjectDTO().stream()
+				.filter(x -> x.getCode().equals(project.getCode()) == false).collect(Collectors.toList());
+
+		ProjectDTO temp = getProjectDTOByProjectCode(project.getCode());
+
+		project.setStatus(temp.getStatus());
+		projects.add(project);
+		return projects;
+	}
+
+	@Override
+	public List<ProjectDTO> deleteProjectDTO(String projectcode) {
+		return getListOfProjectDTO().stream().filter(x -> x.getCode().equals(projectcode) == false)
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ProjectDTO> completeProject(String projectcode) {
+		List<ProjectDTO> projects = getListOfProjectDTO().stream().filter(x -> x.getCode().equals(projectcode) == false)
+				.collect(Collectors.toList());
+
+		ProjectDTO project = getProjectDTOByProjectCode(projectcode);
+		project.setStatus(Status.COMPLETED);
+
+		projects.add(project);
+		return projects;
+	}
+
+	@Override
+	public List<ProjectDTO> completeProjectByManager(UserDTO manager, String projectcode) {
+
+		List<ProjectDTO> list = getCountedListOfProjectDTO(manager).stream()
+				.filter(x -> x.getCode().equals(projectcode) == false).collect(Collectors.toList());
+
+		ProjectDTO updateDTO = getCountedListOfProjectDTO(manager).stream()
+				.filter(x -> x.getCode().equals(projectcode) == true).findFirst().get();
+
+		updateDTO.setStatus(Status.COMPLETED);
+
+		list.add(updateDTO);
+
+		return list;
+	}
+
 }

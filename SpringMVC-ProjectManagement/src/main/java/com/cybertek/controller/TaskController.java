@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.cybertek.data.DataGenerator;
 import com.cybertek.dto.ProjectDTO;
 import com.cybertek.dto.TaskDTO;
+import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.Project;
 import com.cybertek.entity.User;
 import com.cybertek.implementation.ProjectServiceImpl;
@@ -79,8 +80,8 @@ public class TaskController {
 
 		List<TaskDTO> tasks = taskService.getListOfTaskDTO();
 
-		TaskDTO task = DataGenerator.getTaskDTOByTask(taskService.getTaskById(id));
-
+		TaskDTO task = taskService.getTaskDTOById(id);
+				
 		model.addAttribute("tasks", tasks);
 		
 		model.addAttribute("task", task);
@@ -94,21 +95,12 @@ public class TaskController {
 	public String update(@PathVariable("id") Long id, @ModelAttribute("task") TaskDTO taskDTO, BindingResult result,
 			Model model) {
 
-		List<TaskDTO> tasks = DataGenerator.converterTaskDTO(taskService.getListOfTask()).stream()
-				.filter(x -> x.getId() != id).collect(Collectors.toList());
-
-		
-
-		TaskDTO task = DataGenerator.getTaskDTOByTask(taskService.getTaskById(id));
-		task.setContent(taskDTO.getContent());
-		task.setTitle(taskDTO.getTitle());
-		task.setUser(taskDTO.getUser());
-
-		tasks.add(task);
-
+		List<TaskDTO> tasks = taskService.updateTaskDTO(taskDTO);
+				
+	
 		model.addAttribute("tasks", tasks);
 		
-		model.addAttribute("task", task);
+		model.addAttribute("task", taskDTO);
 		model.addAttribute("users", userService.listOfUserDTO());
 		model.addAttribute("projects", projectService.getListOfProjectDTO());
 
@@ -120,9 +112,8 @@ public class TaskController {
 
 		ModelAndView mv = new ModelAndView();
 
-		List<TaskDTO> tasks = DataGenerator.converterTaskDTO(taskService.getListOfTask()).stream()
-				.filter(x -> x.getId() != id).collect(Collectors.toList());
-
+		List<TaskDTO> tasks = taskService.deleteTask(id);
+				
 		mv.addObject("tasks", tasks);
 		mv.addObject("users", userService.listOfUserDTO());
 		mv.addObject("task", new TaskDTO());
@@ -138,13 +129,9 @@ public class TaskController {
 	@GetMapping("/employee")
 	public String edit(Model model) {
 
-		List<TaskDTO> tasks = DataGenerator.converterTaskDTO(taskService.getListOfTask()).stream()
-				.filter(x -> x.getUser().equals(DataGenerator.activeUser) && x.getStatus() != Status.COMPLETED)
-				.collect(Collectors.toList());
+		UserDTO user = DataGenerator.activeUser;
+		List<TaskDTO> tasks = taskService.getEmployeeTasks(user);
 
-		// TaskDTO task = DataGenerator.getTaskDTOByTask(taskService.getTaskById(id));
-
-	
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("task", new TaskDTO());
 		
@@ -159,11 +146,10 @@ public class TaskController {
 	public String emplpoyee_update(@PathVariable("id") Long id, 
 			Model model) {
 
-		List<TaskDTO> tasks = DataGenerator.converterTaskDTO(taskService.getListOfTask()).stream()
-				.filter(x -> x.getUser().equals(DataGenerator.activeUser) && x.getStatus() != Status.COMPLETED)
-				.collect(Collectors.toList());
+		UserDTO user = DataGenerator.activeUser;
+		List<TaskDTO> tasks = taskService.getEmployeeTasks(user);
 
-		TaskDTO task = DataGenerator.getTaskDTOByTask(taskService.getTaskById(id));
+		TaskDTO task =  taskService.getTaskDTOById(id);
 
 
 		model.addAttribute("tasks", tasks);
@@ -180,20 +166,13 @@ public class TaskController {
 	public String employee_update(@PathVariable("id") Long id, @ModelAttribute("task") TaskDTO taskDTO, BindingResult result,
 			Model model) {
 
-		List<TaskDTO> tasks = DataGenerator.converterTaskDTO(taskService.getListOfTask()).stream()
-				.filter(x -> x.getId() != id && x.getUser().equals(DataGenerator.activeUser) && x.getStatus() != Status.COMPLETED).collect(Collectors.toList());
-
+		UserDTO user = DataGenerator.activeUser;
 		
-
-		TaskDTO task = DataGenerator.getTaskDTOByTask(taskService.getTaskById(id));
-		
-		task.setStatus(taskDTO.getStatus());
-
-		tasks.add(task);
+		List<TaskDTO> tasks =taskService.updateTaskDTOForEmployee(user,taskDTO);
 
 		model.addAttribute("tasks", tasks);
 		
-		model.addAttribute("task", task);
+		model.addAttribute("task", taskDTO);
 		model.addAttribute("statuses", DataGenerator.getStatusList());
 		model.addAttribute("users", userService.listOfUserDTO());
 		model.addAttribute("projects", projectService.getListOfProjectDTO());
@@ -205,13 +184,10 @@ public class TaskController {
 	@GetMapping("/employee/archive")
 	public String emplpoyee_archive(Model model) {
 
-		List<TaskDTO> tasks = DataGenerator.converterTaskDTO(taskService.getListOfTask()).stream()
-				.filter(x -> x.getUser().equals(DataGenerator.activeUser) && x.getStatus() == Status.COMPLETED)
-				.collect(Collectors.toList());
-
-	
-
-
+		UserDTO user = DataGenerator.activeUser;
+		
+		List<TaskDTO> tasks = taskService.archiveList(user);
+				
 		model.addAttribute("tasks", tasks);
 
 		return "task/archive_employee";

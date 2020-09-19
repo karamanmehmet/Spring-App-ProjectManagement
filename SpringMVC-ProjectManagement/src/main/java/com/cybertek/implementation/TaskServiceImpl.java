@@ -3,6 +3,7 @@ package com.cybertek.implementation;
 import java.util.List;
 
 import com.cybertek.dto.TaskDTO;
+import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.Project;
 import com.cybertek.entity.Task;
 import com.cybertek.entity.User;
@@ -31,5 +32,16 @@ public interface TaskServiceImpl {
 
 	Task getTaskById(Long id);
 
+	TaskDTO getTaskDTOById(Long id);
+
+	List<TaskDTO> updateTaskDTO(TaskDTO taskDTO);
+
+	List<TaskDTO> deleteTask(Long id);
+
+	List<TaskDTO> getEmployeeTasks(UserDTO user);
+
+	List<TaskDTO> updateTaskDTOForEmployee(UserDTO user,TaskDTO taskDTO);
+
+	List<TaskDTO> archiveList(UserDTO user);
 	
 }
