@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="fragments :: page_head"> </head>
+
+<body>
+		<!-- ============================================================== -->
+		<!-- main wrapper -->
+		<!-- ============================================================== -->
+		<div class="dashboard-main-wrapper">
+		<!-- ============================================================== -->
+		<!-- navbar -->
+		<!-- ============================================================== -->
+		<div th:replace="fragments :: page_header"></div>
+		<!-- ============================================================== -->
+		<!-- end navbar -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<div th:replace="fragments :: page_menu"></div>
+		<!-- wrapper  -->
+		<!-- ============================================================== -->
+		<div class="dashboard-wrapper">
+			<div class="dashboard-ecommerce">
+				<div class="container-fluid dashboard-content">
+					<div class="ecommerce-widget">
+						<div class="row">
+							<div class="col-md-12">
+								<section class="panel panel-transparent">
+									<header class="panel-heading">
+										<h2 class="panel-title">Task Assign</h2> </header>
+									<div class="panel-body">
+										<form id="needs-validation" novalidate th:action="@{/task}" th:object="${task}" method="post">
+											<div class="row">
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="form-group">
+														<label for="code">Project</label>
+														<select name="project" class="custom-select" required >
+														<option th:value="''" th:text="Select"></option>
+														<option th:each="p : ${projects}" th:value="${p.code}" th:text="${p.code +'-'+ p.name}"></option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="form-group">
+														<label for="code">Assigned Employee</label>
+														<select name="user"  class="custom-select" required >
+														<option th:value="''" th:text="Select"></option>
+														<option th:each="m : ${users}" th:value="${m.username}" th:text="${m.firstname +' '+ m.lastname}"></option>
+														</select>
+														<div class="invalid-feedback">Please choose employee</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="row">
+														<div class="col-sm-12 col-md-12 col-xs-12">
+															<div class="form-group">
+																<label for="detail">Task Subject</label>
+																<input type="text" th:field="*{title}" class="form-control" aria-describedby="inputGroupPrepend" required /> </div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="row">
+														<div class="col-sm-12 col-md-12 col-xs-12">
+															<div class="form-group">
+																<label for="detail">Detail</label>
+																<textarea class="form-control" rows="3"  th:field="*{content}" aria-describedby="inputGroupPrepend" required></textarea>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="float-right">
+														<button class="btn btn-success rounded-0" type="submit">Save</button>
+													</div>
+												</div>
+											</div>
+										</form>
+								</section>
+								</div>
+							</div>
+						</div>
+						<br>
+						<br>
+						<div class="panel-body">
+							<div class="row ">
+								<!-- ============================================================== -->
+								<!-- responsive table -->
+								<!-- ============================================================== -->
+								<div class="col-12">
+									<div class="card">
+										<h5 class="card-header">Task List</h5>
+										<div class="card-body">
+											<div class="table-responsive ">
+												<table class="table">
+													<thead>
+														<tr>
+															<th scope="col">Project </th>
+															<th scope="col">Manager </th>
+															<th scope="col">Task Subject</th>
+															<th scope="col">Assigned Employee</th>
+															<th scope="col">Assigned Date</th>
+															<th scope="col">Status</th>
+															<th scope="col">#Action</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="task : ${tasks}">
+															<td th:text="${task.project.code +'-'+task.project.name}" />
+															<td th:text="${task.manager.firstname +' '+ task.manager.lastname}" />
+															<td th:text="${task.title}" />
+															<td th:text="${task.user.firstname +' '+ task.user.lastname}" />
+															<td th:text="${#temporals.format(task.startDateTime, 'MM/dd/yyyy HH:mm')}" />
+															<td th:text="${task.status.value}" />
+															<td><a class="btn btn-warning rounded-0" th:href="@{/task/edit/{id}(id=${task.id})}">Update</a> <a class="btn btn-danger rounded-0" th:href="@{/task/delete/{id}(id=${task.id})}">Delete</a> </td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- ============================================================== -->
+								<!-- end responsive table -->
+								<!-- ============================================================== -->
+							</div>
+						</div>
+						<!-- end: page -->
+						</section>
+					</div>
+					</section>
+				</div>
+				<!----============================================================== -->
+				<!-- end wrapper  -->
+				<script th:src="@{/assets/vendor/jquery/jquery-3.3.1.min.js}"></script>
+				<!-- bootstap bundle js -->
+				<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+				<!-- slimscroll js -->
+				<script th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+				<!-- main js -->
+				<script th:src="@{/assets/libs/js/main-js.js}"></script>
+</body>
+
+</html>
