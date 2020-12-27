@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User save(UserDTO dto) {
+	public UserDTO save(UserDTO dto) {
 
 		String principalUser = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
 		obj.setInsertDateTime(LocalDateTime.now());
 
 		User user = userRepository.save(obj);
-		return user;
+		return userMapper.convertToDto(user);
 
 	}
 

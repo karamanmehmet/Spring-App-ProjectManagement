@@ -15,7 +15,7 @@ public interface UserService {
 	
 	List<UserDTO> listManagers();
 	
-	User save(UserDTO dto);
+	UserDTO save(UserDTO dto);
 	
 	UserDTO findByUserName(String username);
 	

@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cybertek</groupId>
-	<artifactId>SpringMVC-ProjectManagement</artifactId>
+	<artifactId>05-SpringMVC-ProjectManagement-WebClient-Weather</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SpringMVC-ProjectManagement</name>
+	<name>05-SpringMVC-ProjectManagement-WebClient-Weather</name>
 	<description>Demo ProjectManagement for Spring Boot</description>
 
 	<properties>
