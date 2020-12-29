@@ -74,27 +74,33 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public Project save(ProjectDTO dto) {
+	public ProjectDTO save(ProjectDTO dto) {
+		
+		
+
 
 		String principalUser = SecurityContextHolder.getContext().getAuthentication().getName();
-		
+
 		dto.setStatus(Status.OPEN);
-	
+		
+		
+		
+		
 
 		Project obj = projectMapper.convertToEntity(dto);
 		obj.setInsertUserId(principalUser);
 		obj.setInsertDateTime(LocalDateTime.now());
-	    
+
 		Project project = projectRepository.saveAndFlush(obj);
 
-		return project;
+		return projectMapper.convertToDto(project);
 	}
 
 	@Override
 	public ProjectDTO update(ProjectDTO dto) {
 
 		String principalUser = SecurityContextHolder.getContext().getAuthentication().getName();
-		
+
 		Project project = projectRepository.getByCode(dto.getCode());
 		project.setName(dto.getName());
 		project.setDetail(dto.getDetail());
@@ -116,14 +122,18 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public void delete(String code) {
+	public boolean delete(String code) {
 
 		Project project = projectRepository.getByCode(code);
 
-		taskService.deleteByProject(project);
+		try {
+			taskService.deleteByProject(project);
 
-		projectRepository.deleteProject(code);
-
+			projectRepository.deleteProject(code);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@Override

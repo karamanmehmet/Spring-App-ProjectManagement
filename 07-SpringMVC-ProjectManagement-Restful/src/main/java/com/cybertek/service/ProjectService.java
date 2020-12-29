@@ -15,12 +15,12 @@ public interface ProjectService {
 	
 	List<ProjectDTO> listAllProjects(UserDTO manager);
 	
-	Project save(ProjectDTO dto);
+	ProjectDTO save(ProjectDTO dto);
 	
 	ProjectDTO update(ProjectDTO dto);
 	
 	List<ProjectDTO> listAllProjectDetails();
 	
-	void delete(String code);
+	boolean delete(String code);
 
 }
