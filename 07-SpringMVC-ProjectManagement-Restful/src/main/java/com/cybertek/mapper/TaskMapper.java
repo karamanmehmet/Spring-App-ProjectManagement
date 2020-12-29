@@ -3,9 +3,7 @@ package com.cybertek.mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cybertek.dto.ProjectDTO;
 import com.cybertek.dto.TaskDTO;
-import com.cybertek.entity.Project;
 import com.cybertek.entity.Task;
 import com.cybertek.repository.TaskRepository;
 

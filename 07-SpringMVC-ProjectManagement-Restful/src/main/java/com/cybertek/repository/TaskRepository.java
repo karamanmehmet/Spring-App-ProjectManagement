@@ -2,9 +2,6 @@ package com.cybertek.repository;
 
 import java.util.List;
 
-import javax.persistence.NamedStoredProcedureQuery;
-import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureParameter;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -17,6 +17,7 @@ import com.cybertek.entity.User;
 import com.cybertek.mapper.ProjectMapper;
 import com.cybertek.mapper.TaskMapper;
 import com.cybertek.mapper.UserMapper;
+import com.cybertek.repository.ProjectRepository;
 import com.cybertek.repository.TaskRepository;
 import com.cybertek.repository.UserRepository;
 import com.cybertek.service.TaskService;
@@ -26,8 +27,10 @@ import com.cybertek.util.Status;
 public class TaskServiceImpl implements TaskService {
 
 	TaskRepository taskRepository;
-	
+
 	UserRepository userRepository;
+
+	ProjectRepository projectRepository;
 
 	UserMapper userMapper;
 
@@ -37,12 +40,14 @@ public class TaskServiceImpl implements TaskService {
 
 	@Autowired
 	public TaskServiceImpl(com.cybertek.repository.TaskRepository taskRepository, TaskMapper taskMapper,
-			UserMapper userMapper, ProjectMapper projectMapper,UserRepository userRepository) {
+			UserMapper userMapper, ProjectMapper projectMapper, UserRepository userRepository,
+			ProjectRepository projectRepository) {
 		this.taskRepository = taskRepository;
 		this.taskMapper = taskMapper;
 		this.userMapper = userMapper;
 		this.projectMapper = projectMapper;
 		this.userRepository = userRepository;
+		this.projectRepository = projectRepository;
 	}
 
 	@Override
@@ -85,23 +90,22 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public List<TaskDTO> listAllByUserAndProject(UserDTO user, ProjectDTO project) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Task save(TaskDTO dto) {
+	public TaskDTO save(TaskDTO dto) {
 
 		String principalUser = SecurityContextHolder.getContext().getAuthentication().getName();
 
-		dto.setStatus(Status.OPEN);
-
-		Task task = taskMapper.convertToEntity(dto);
+		Task task = new Task();
+		task.setContent(dto.getContent());
+		task.setEndDateTime(dto.getEndDateTime());
+		task.setProject(projectRepository.getByCode(dto.getProject().getCode()));
+		task.setUser(userRepository.findByusername(dto.getUser().getUsername()));
+		task.setTitle(dto.getTitle());
+		task.setStartDateTime(dto.getStartDateTime());
+		task.setStatus(Status.OPEN);
 		task.setInsertUserId(principalUser);
 		task.setInsertDateTime(LocalDateTime.now());
 
-		return taskRepository.save(task);
+		return taskMapper.convertToDto(taskRepository.save(task));
 
 	}
 
@@ -112,20 +116,26 @@ public class TaskServiceImpl implements TaskService {
 
 		Task task = taskRepository.findById(dto.getId()).get();
 
-		Project project = projectMapper.convertToEntity(dto.getProject());
-		User user = userMapper.convertToEntity(dto.getUser());
-
+		if (dto.getProject() != null && dto.getProject().getCode() != null) {
+			Project project = projectMapper.convertToEntity(dto.getProject());
+			task.setProject(project);
+		}
+		if (dto.getUser() != null && dto.getUser().getUsername() != null) {
+			User user = userMapper.convertToEntity(dto.getUser());
+			task.setUser(user);
+		}
 		task.setContent(dto.getContent());
-		task.setEndDateTime(dto.getEndDateTime());
-		task.setProject(project);
-		task.setUser(user);
+
 		task.setTitle(dto.getTitle());
-		task.setStartDateTime(dto.getStartDateTime());
-		task.setStatus(dto.getStatus());
+
+		if (dto.getStatus() != null) {
+			task.setStatus(dto.getStatus());
+		}
+
 		task.setLastUpdateUserId(principalUser);
 		task.setLastUpdateDateTime(LocalDateTime.now());
-		
-		if(dto.getStatus().equals(Status.COMPLETED)) {
+
+		if (dto.getStatus().equals(Status.COMPLETED)) {
 			task.setEndDateTime(LocalDateTime.now());
 		}
 
@@ -135,15 +145,24 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public void delete(long id) {
-		taskRepository.deleteById(id);
-
+	public boolean delete(long id) {
+		try {
+			taskRepository.deleteById(id);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@Override
-	public void deleteByProject(Project project) {
-		taskRepository.deleteByProject(project);
+	public boolean deleteByProject(Project project) {
 
+		try {
+			taskRepository.deleteByProject(project);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@Override
@@ -160,10 +179,10 @@ public class TaskServiceImpl implements TaskService {
 	public List<TaskDTO> listAllTasksByStatus(Status status) {
 
 		String principalUser = SecurityContextHolder.getContext().getAuthentication().getName();
-		
+
 		User user = userRepository.findByusername(principalUser);
-		
-		List<Task> list = taskRepository.findAllByStatusNQ(status,user);
+
+		List<Task> list = taskRepository.findAllByStatusNQ(status, user);
 
 		return list.stream().map(obj -> {
 			return taskMapper.convertToDto(obj);
@@ -172,13 +191,12 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public List<TaskDTO> listAllTasksByStatusIsNot(Status status) {
-		
+
 		String principalUser = SecurityContextHolder.getContext().getAuthentication().getName();
-		
+
 		User user = userRepository.findByusername(principalUser);
-		
-		
-		List<Task> list = taskRepository.findAllByStatusIsNotAndUser(status,user);
+
+		List<Task> list = taskRepository.findAllByStatusIsNotAndUser(status, user);
 
 		return list.stream().map(obj -> {
 			return taskMapper.convertToDto(obj);

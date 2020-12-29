@@ -19,6 +19,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
 	List<Project> findAllByManager(User manager);
 	
+	
+	
 	@Modifying
 	@Transactional
 	@Query("Delete from Project where code = :code ")

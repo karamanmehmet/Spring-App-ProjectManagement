@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.cybertek.dto.ProjectDTO;
 import com.cybertek.dto.UserDTO;
-import com.cybertek.entity.Project;
-import com.cybertek.entity.User;
 
 public interface ProjectService {
 

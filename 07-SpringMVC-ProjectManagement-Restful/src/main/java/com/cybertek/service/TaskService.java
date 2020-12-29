@@ -7,7 +7,6 @@ import com.cybertek.dto.TaskDTO;
 import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.Project;
 import com.cybertek.entity.Task;
-import com.cybertek.entity.User;
 import com.cybertek.util.Status;
 
 public interface TaskService {
@@ -23,15 +22,14 @@ public interface TaskService {
 	
 	List<TaskDTO> listAllByUser(UserDTO user);
 	
-	List<TaskDTO> listAllByUserAndProject(UserDTO user,ProjectDTO project);
 	
-	Task save(TaskDTO dto);
+	TaskDTO save(TaskDTO dto);
 	
 	TaskDTO update(TaskDTO dto);
 	
-	void delete(long id);
+	boolean delete(long id);
 	
-	void deleteByProject(Project project);
+	boolean deleteByProject(Project project);
 
 	int totalNonCompletedTasks(String projectCode);
 	

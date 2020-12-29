@@ -10,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.cybertek.configuration.UserPrincipal;
 import com.cybertek.dto.ProjectDTO;
 import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.Project;
@@ -140,7 +139,7 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<ProjectDTO> listAllProjectDetails() {
 		List<Project> list = projectRepository.findAll(Sort.by("code"));
 
-		List<ProjectDTO> listOfDTO = new ArrayList();
+		List<ProjectDTO> listOfDTO = new ArrayList<ProjectDTO>();
 
 		for (Project project : list) {
 

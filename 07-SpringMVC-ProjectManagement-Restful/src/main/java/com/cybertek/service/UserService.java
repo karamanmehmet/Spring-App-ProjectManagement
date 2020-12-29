@@ -2,9 +2,7 @@ package com.cybertek.service;
 
 import java.util.List;
 
-import com.cybertek.dto.RoleDTO;
 import com.cybertek.dto.UserDTO;
-import com.cybertek.entity.Role;
 import com.cybertek.entity.User;
 
 public interface UserService {

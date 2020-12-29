@@ -5,9 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesBindin
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import com.cybertek.dto.RoleDTO;
 import com.cybertek.dto.UserDTO;
-import com.cybertek.service.RoleService;
 import com.cybertek.service.UserService;
 
 @Component
