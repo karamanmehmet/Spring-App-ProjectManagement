@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.Role;
 import com.cybertek.entity.User;
+import com.cybertek.exception.RoleNotFoundException;
+import com.cybertek.exception.UserAlreadyExistAuthenticationException;
+import com.cybertek.exception.UserNotFoundException;
 import com.cybertek.mapper.RoleMapper;
 import com.cybertek.mapper.UserMapper;
 import com.cybertek.repository.RoleRepository;
@@ -69,7 +72,18 @@ public class UserServiceImpl implements UserService {
 		String principalUser = SecurityContextHolder.getContext().getAuthentication().getName();
 
 		Role role = roleRepository.findByDescription(dto.getRole().getDescription());
+		
+		if(role == null) {
+			throw new RoleNotFoundException("Role '"+dto.getRole().getDescription()+"' Not Found Exception");
+		}
 
+		
+		User newUser= userRepository.findByusername(dto.getUsername());
+		
+		if(newUser != null) {
+			throw new UserAlreadyExistAuthenticationException("User '"+dto.getUsername()+"' Already Exist Exception");
+		}
+		
 		User obj = new User();
 
 		obj.setRole(role);
@@ -92,6 +106,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO findByUserName(String username) {
 		User user = userRepository.findByusername(username);
+		
+		
+		if(user == null) {
+			throw new UserNotFoundException("User '"+username+"' Not Found Exception");
+		}
 		return userMapper.convertToDto(user);
 	}
 
@@ -101,9 +120,24 @@ public class UserServiceImpl implements UserService {
 		String principalUser = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = userRepository.findByusername(dto.getUsername());
 
+
+		
+		if(user == null) {
+			throw new UserNotFoundException("User '"+dto.getUsername()+"' Not Found Exception");
+		}
+
+		
+		
 		// if role is going to update
 		if (!dto.getRole().getDescription().equals("")) {
-			user.setRole(roleRepository.findByDescription(dto.getRole().getDescription()));
+			
+			Role role = roleRepository.findByDescription(dto.getRole().getDescription());
+			if(role == null) {
+				throw new RoleNotFoundException("Role  '"+dto.getRole().getDescription()+"' Not Found Exception");
+			}
+			
+			
+			user.setRole(role);
 		}
 
 		// if password update needed
@@ -132,6 +166,14 @@ public class UserServiceImpl implements UserService {
 		String principalUser = SecurityContextHolder.getContext().getAuthentication().getName();
 
 		User user = userRepository.findByusername(username);
+		
+		
+		if(user == null) {
+			throw new UserNotFoundException("User  '"+username+"'  Not Found Exception");
+		}
+		
+		
+		
 		user.setEnabled(status);
 
 		user.setLastUpdateUserId(principalUser);
@@ -162,6 +204,10 @@ public class UserServiceImpl implements UserService {
 	public boolean delete(String username) {
 		User user = userRepository.findByusername(username);
 
+		if(user == null) {
+			throw new UserNotFoundException("User '"+username+"'  Not Found Exception");
+		}
+		
 		try {
 			userRepository.delete(user);
 

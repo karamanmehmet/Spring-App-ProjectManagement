@@ -14,6 +14,8 @@ import com.cybertek.dto.ProjectDTO;
 import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.Project;
 import com.cybertek.entity.User;
+import com.cybertek.exception.ProjectCodeAlreadyExistException;
+import com.cybertek.exception.UserAlreadyExistAuthenticationException;
 import com.cybertek.mapper.ProjectMapper;
 import com.cybertek.repository.ProjectRepository;
 import com.cybertek.service.ProjectService;
@@ -74,6 +76,16 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public ProjectDTO save(ProjectDTO dto) {
+		
+		
+		
+		//check if project code is exist
+		
+		Project p= projectRepository.getByCode(dto.getCode());
+		
+		if(p != null) {
+			throw new ProjectCodeAlreadyExistException("Project Code "+dto.getCode()+" Already Exist Exception");
+		}
 		
 		
 
