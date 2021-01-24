@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="fragments :: page_head"> </head>
+
+<body>
+		<!-- ============================================================== -->
+		<!-- main wrapper -->
+		<!-- ============================================================== -->
+		<div class="dashboard-main-wrapper">
+		<!-- ============================================================== -->
+		<!-- navbar -->
+		<!-- ============================================================== -->
+		<div th:replace="fragments :: page_header"> </div>
+		<!-- ============================================================== -->
+		<!-- end navbar -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<div th:replace="fragments :: page_menu"> </div>
+		<!-- ============================================================== -->
+		<!-- end left sidebar -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<!-- wrapper  -->
+		<!-- ============================================================== -->
+		<div class="dashboard-wrapper">
+			<div class="dashboard-ecommerce">
+				<div class="container-fluid dashboard-content">
+					<div class="ecommerce-widget">
+						<div class="row">
+							<div class="col-lg-6 col-md-12">
+								<section class="panel panel-transparent">
+									<header class="panel-heading">
+										<h2 class="panel-title">User Create</h2> </header>
+									<div class="panel-body">
+										<form id="needs-validation" action="#" th:action="@{/admin/edit/{id}(id=${user.username})}" th:object="${user}" method="post">
+											<div class="row">
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="form-group">
+														<label for="firstname">First Name</label>
+														<input type="text" id="firstname" th:field="*{firstname}" placeholder="First Name" class="form-control" aria-describedby="inputGroupPrepend" required />
+														<div class="invalid-feedback">Please enter first name.</div>
+													</div>
+												</div>
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="form-group">
+														<label for="lastname">Last Name</label>
+														<input type="text" id="lastname" th:field="*{lastname}" placeholder="Last Name" class="form-control" aria-describedby="inputGroupPrepend" required />
+														<div class="invalid-feedback">Please enter last name.</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="form-group">
+														<label for="email">Email address</label>
+														<input type="email" class="form-control" id="email" th:field="*{username}" placeholder="email address" aria-describedby="inputGroupPrepend" required>
+														<div class="invalid-feedback">Please provide a valid email.</div>
+													</div>
+												</div>
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="form-group">
+														<label for="phonenumber">Mobile Number</label>
+														<input type="tel" pattern="^\d{10}$" class="form-control" id="phonenumber" th:field="*{phone}" placeholder="Mobile Number" aria-describedby="inputGroupPrepend" required>
+														<div class="invalid-feedback">Please enter 10 digit mobile number.</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="form-group">
+														<label for="inputPassword1">Password</label>
+														<input type="password" th:field="*{password}" class="form-control" name="inputPassword1" id="pass1"  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" required>
+														<div class="invalid-feedback">Passwords should be a minimum of 8 characters and include at least one upper case letter, one lower case letter and one number.</div>
+													</div>
+												</div>
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="form-group">
+														<label for="inputPassword1">Password Confirmation</label>
+														<input type="password" class="form-control" name="inputPassword2" id="pass2" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" required>
+														<div class="invalid-feedback">Passwords should be a minimum of 8 characters and include at least one upper case letter, one lower case letter and one number.</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="form-group">
+														<label for="Gender">Gender</label>
+														<br>
+														<label class="custom-control custom-radio custom-control-inline">
+															<input th:field="*{gender}" th:value="Male" type="radio" name="radio-inline" checked="true" class="custom-control-input"><span class="custom-control-label">Male</span> </label>
+														<label class="custom-control custom-radio custom-control-inline">
+															<input type="radio" th:field="*{gender}" th:value="Female" name="radio-inline" class="custom-control-input"><span class="custom-control-label">Female</span> </label>
+													</div>
+												</div>
+												<div class="col-sm-6 col-md-6 col-xs-12">
+													<div class="form-group">
+														<label for="lastname">Role</label>
+														<select name="role" class="custom-select" required >
+														<option th:value="''" th:text="Select"></option>
+														<option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.description}" th:selected="${role.id} == ${user.role.id}"></option>
+														</select>
+														<div class="invalid-feedback">Please choose role</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-12 col-md-12 col-xs-12">
+													<div class="form-group">
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+															<label class="form-check-label" for="invalidCheck"> Agree to terms and conditions </label>
+															<div class="invalid-feedback">You must agree before submitting.</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-12 col-md-12 col-xs-12">
+													<div class="float-right">
+														<button class="btn btn-success rounded-0" type="submit" onclick="return Validate()">Save</button>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+					<br>
+					<br>
+					<div class="panel-body">
+						<div class="row ">
+							<!-- ============================================================== -->
+							<!-- responsive table -->
+							<!-- ============================================================== -->
+							<div class="col-12">
+								<div class="card">
+									<h5 class="card-header">User List</h5>
+									<div class="card-body">
+										<div class="table-responsive ">
+											<table class="table">
+												<thead>
+													<tr>
+														<th scope="col">Name</th>
+														<th scope="col">E-Mail (username)</th>
+														<th scope="col">Gender</th>
+														<th scope="col">Phone</th>
+														<th scope="col">Role</th>
+														<th scope="col">Status</th>
+														<th scope="col">#Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="user : ${users}">
+														<td th:text="${user.firstname + ' '+ user.lastname}"></td>
+														<td th:text="${user.username}"></td>
+														<td th:text="${user.gender}"></td>
+														<td th:text="${user.phone}"></td>
+														<td th:text="${user.role.description}"></td>
+														<td th:text="${user.enabled ? 'Active' : 'Passive' }"></td>
+														<td><a class="btn btn-warning rounded-0" th:href="@{/admin/edit/{id}(id=${user.username})}">Update</a> <a class="btn btn-danger rounded-0" th:href="@{/admin/delete/{id}(id=${user.username})}">Delete</a></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- ============================================================== -->
+							<!-- end responsive table -->
+							<!-- ============================================================== -->
+						</div>
+					</div>
+					<!-- end: page -->
+					</section>
+				</div>
+				</section>
+			</div>
+			<!----============================================================== -->
+			<!-- end wrapper  -->
+			<!-- ============================================================== -->
+		</div>
+		<!-- ============================================================== -->
+		<!-- end main wrapper  -->
+		<!-- ============================================================== -->
+		<!-- Optional JavaScript -->
+		<!-- jquery 3.3.1 -->
+		<script th:src="@{/assets/vendor/jquery/jquery-3.3.1.min.js}"></script>
+		<!-- bootstap bundle js -->
+		<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+		<!-- slimscroll js -->
+		<script th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+		<!-- main js -->
+		<script th:src="@{/assets/libs/js/main-js.js}"></script>
+		<script type="text/javascript">
+		(function() {
+			'use strict';
+			window.addEventListener('load', function() {
+				var form = document.getElementById('needs-validation');
+				form.addEventListener('submit', function(event) {
+					if(form.checkValidity() === false) {
+						event.preventDefault();
+						event.stopPropagation();
+					}
+					form.classList.add('was-validated');
+				}, false);
+			}, false);
+		})();
+		</script>
+		<script type="text/javascript">
+		function Validate() {
+			var password = document.getElementById("pass1").value;
+			var confirmPassword = document.getElementById("pass2").value;
+			if(password != confirmPassword) {
+				alert("Passwords do not match.");
+				return false;
+			}
+			return true;
+		}
+		</script>
+</body>
+
+</html>

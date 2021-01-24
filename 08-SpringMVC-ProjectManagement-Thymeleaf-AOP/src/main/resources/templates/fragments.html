@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<head th:fragment="page_head">
+<!-- Required meta tags -->
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" />
+<link th:href="@{/assets/vendor/fonts/circular-std/style.css}"
+	rel="stylesheet" />
+<link rel="stylesheet" th:href="@{/assets/libs/css/style.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/fonts/fontawesome/css/fontawesome-all.css}" />
+<link rel="stylesheet"
+	th:href="@{https://pro.fontawesome.com/releases/v5.10.0/css/all.css}"
+	integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+	crossorigin="anonymous" />
+<title>Cybertek - Spring Project</title>
+</head>
+
+<body>
+
+
+	<div class="dashboard-header" th:fragment="page_header">
+		<nav class="navbar navbar-expand-lg bg-white fixed-top">
+			<a class="navbar-brand logo" href="../"> <img
+				th:src="@{/assets/images/Cybertek_Logo.png}" height="45"
+				alt="CYBERTEK Training" />
+			</a>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto navbar-right-top">
+					<li class="nav-item dropdown connection"><a class="nav-link"
+						href="../"> <i class="fas fa-home"></i>
+					</a></li>
+					<li class="nav-item dropdown connection">
+						<a class="nav-link"
+							th:text="${ #numbers.formatInteger(session.temperature,2,'NONE') } + &#8457;"></a>
+					</li>
+					<li class="nav-item dropdown nav-user"><a
+						class="nav-link nav-user-img" href="#"
+						id="navbarDropdownMenuLink2" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false"><img
+							th:src="@{/assets/images/avatar-1.jpg}" alt=""
+							class="user-avatar-md rounded-circle" /></a>
+						<div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
+							aria-labelledby="navbarDropdownMenuLink2">
+							<form class="form-inline my-2 my-lg-0" form-method="post"
+								th:action="@{/logout}">
+								<button sec:authorize="isAuthenticated()" th:href="@{~/logout}"
+									c class="btn btn-outline-danger my-2 my-sm-0 btn-sm"
+									type="submit">Logout</button>
+								<button sec:authorize="isAnonymous()" th:href="@{~/login}"
+									class="btn btn-outline-info my-2 my-sm-0 btn-sm" type="submit">Login</button>
+							</form></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	<!-- left sidebar -->
+	<!-- ============================================================== -->
+	<div class="nav-left-sidebar sidebar-dark" th:fragment="page_menu">
+		<div class="menu-list">
+			<nav class="navbar navbar-expand-lg navbar-light">
+				<a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarNav" aria-controls="navbarNav"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav flex-column">
+						<li class="nav-divider"></li>
+						<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a
+							class="nav-link active" href="#" data-toggle="collapse"
+							aria-expanded="false" data-target="#submenu-1"
+							aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Administration
+								<span class="badge badge-success">6</span></a>
+							<div id="submenu-1" class="collapse submenu" style="">
+								<ul class="nav flex-column">
+									<li class="nav-item"><a class="nav-link" href="/admin">User
+											Create</a></li>
+									<li class="nav-item"><a class="nav-link" href="/project">Project
+											Create</a></li>
+								</ul>
+							</div></li>
+						<li sec:authorize="hasRole('ROLE_MANAGER')" class="nav-item">
+							<a class="nav-link" href="#" data-toggle="collapse"
+							aria-expanded="false" data-target="#submenu-2"
+							aria-controls="submenu-2"> <i class="fa fa-fw fa-users"></i>Manager
+						</a>
+							<div id="submenu-2" class="collapse submenu" style="">
+								<ul class="nav flex-column">
+									<li class="nav-item"><a class="nav-link" href="/task">Task
+											Assign </a></li>
+									<li class="nav-item"><a class="nav-link"
+										href="/project/manager/complete">Project Status</a></li>
+								</ul>
+							</div>
+						</li>
+						<li sec:authorize="hasRole('ROLE_USER')" class="nav-item"><a
+							class="nav-link" href="#" data-toggle="collapse"
+							aria-expanded="false" data-target="#submenu-3"
+							aria-controls="submenu-3"><i class="fa fa-fw fa-user"></i>Employee</a>
+							<div id="submenu-3" class="collapse submenu" style="">
+								<ul class="nav flex-column">
+									<li class="nav-item"><a class="nav-link"
+										href="/task/employee">Pending Tasks</a></li>
+									<li class="nav-item"><a class="nav-link"
+										href="/task/employee/archive">Archive</a></li>
+								</ul>
+							</div></li>
+							
+							
+							<li sec:authorize="isAuthenticated()" class="nav-item">
+							<a class="nav-link" href="#" data-toggle="collapse"
+							aria-expanded="false" data-target="#submenu-4"
+							aria-controls="submenu-4"> <i class="fa fa-fw fa-users"></i>Reports
+						</a>
+							<div id="submenu-4" class="collapse submenu" style="">
+								<ul class="nav flex-column">
+									<li sec:authorize="isAuthenticated()"  class="nav-item"><a class="nav-link" href="/report/general">Project List General </a></li>
+									<li sec:authorize="hasRole('ROLE_ADMIN')"  class="nav-item"><a class="nav-link" href="/report/project">Project Report</a></li>
+									<li sec:authorize="hasRole('ROLE_MANAGER')"  class="nav-item"><a class="nav-link" href="/report/task">Task Report</a></li>
+								</ul>
+							</div>
+						</li>						
+							
+							
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- end left sidebar -->
+
+
+</body>
+
+</html>

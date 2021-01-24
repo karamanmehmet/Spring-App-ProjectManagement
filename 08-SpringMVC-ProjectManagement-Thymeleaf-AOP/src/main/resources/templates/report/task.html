@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="fragments :: page_head">
+</head>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- main wrapper -->
+	<!-- ============================================================== -->
+	<div class="dashboard-main-wrapper">
+		<!-- ============================================================== -->
+		<!-- navbar -->
+		<!-- ============================================================== -->
+		<div th:replace="fragments :: page_header"></div>
+		<!-- ============================================================== -->
+		<!-- end navbar -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<div th:replace="fragments :: page_menu"></div>
+		<!-- ============================================================== -->
+		<!-- end left sidebar -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<!-- wrapper  -->
+		<!-- ============================================================== -->
+		<div class="dashboard-wrapper">
+			<div class="dashboard-ecommerce">
+				<div class="container-fluid dashboard-content">
+					<div class="panel-body">
+						<div class="row ">
+							<!-- ============================================================== -->
+							<!-- responsive table -->
+							<!-- ============================================================== -->
+	<div class="col-6">
+							<form id="needs-validation" novalidate action="#"
+								th:action="@{/report/task}" th:object="${user}" method="post">
+								<div class="row">
+									<div class="col-sm-12 col-md-12 col-xs-12">
+										<div class="form-group">
+											<label for="code"> User</label> <select
+												th:field="*{username}" class="custom-select">
+												<option th:value="''" th:text="Select"></option>
+												<option th:each="u : ${users}" th:value="${u.username}"
+													th:text="${u.firstname +' '+ u.lastname}"></option>
+											</select>
+											<div class="invalid-feedback">Please choose user</div>
+										</div>
+
+										<div class="form-group">
+											<div class="float-right">
+												<button class="btn btn-success rounded-0" type="submit"
+													>Query</button>
+											</div>
+										</div>
+									</div>
+
+
+								</div>
+							</form>
+
+</div>
+					
+					
+							<!-- ============================================================== -->
+							<!-- responsive table -->
+							<!-- ============================================================== -->
+							<div class="col-12">
+								<div class="card">
+									<h5 class="card-header">Task List</h5>
+									<div class="card-body">
+										<div class="table-responsive ">
+											<table class="table">
+												<thead>
+													<tr>
+														<th scope="col">Project </th>
+														<th scope="col">Task Subject</th>
+														<th scope="col">Assigned Employee</th>
+														<th scope="col">Assigned Date</th>
+														<th scope="col">Status</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="task : ${tasks}">
+														<td th:text="${task.project.code +'-'+task.project.name}" />
+														<td th:text="${task.title}" />
+														<td th:text="${task.user.firstname +' '+ task.user.lastname}" />
+														<td th:text="${task.startDateTime}" />
+														<td th:text="${task.status}" /> </tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- ============================================================== -->
+							<!-- end responsive table -->
+							<!-- ============================================================== -->
+						</div>
+					</div>
+					<!-- end: page -->
+					</section>
+				</div>
+				</section>
+			</div>
+			<!----============================================================== -->
+			<!-- end wrapper  -->
+			<!-- ============================================================== -->
+		</div>
+		<!-- ============================================================== -->
+		<!-- end main wrapper  -->
+		<!-- ============================================================== -->
+		<!-- Optional JavaScript -->
+		<!-- jquery 3.3.1 -->
+		<script th:src="@{/assets/vendor/jquery/jquery-3.3.1.min.js}"></script>
+		<!-- bootstap bundle js -->
+		<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+		<!-- slimscroll js -->
+		<script th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+		<!-- main js -->
+		<script th:src="@{/assets/libs/js/main-js.js}"></script>
+		<script th:src="@{/assets/vendor/datepicker/datepicker.js}"></script>
+		<script th:src="@{/assets/vendor/datepicker/moment.js}"></script>
+		<script
+			th:src="@{/assets/vendor/datepicker/tempusdominus-bootstrap-4.js}"></script>
+</body>
+
+</html>
