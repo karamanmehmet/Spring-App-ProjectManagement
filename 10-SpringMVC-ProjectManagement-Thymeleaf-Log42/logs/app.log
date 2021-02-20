@@ -1,0 +1,14 @@
+[INFO ] 2021-02-15 14:15:38.263 [https-jsse-nio-8443-exec-6] LoggingAspect - Before ( User : manager@cybertek.com  Method : ProjectController.add(..) - Parameters : [{}] 
+[INFO ] 2021-02-15 14:15:38.433 [https-jsse-nio-8443-exec-6] PerformanceAspect - Time taken to execute:163 ms ( Method : ProjectServiceImpl.listAllProjects() - Parameters : [] 
+[INFO ] 2021-02-15 14:15:38.484 [https-jsse-nio-8443-exec-6] LoggingAspect - AfterReturning ( User : manager@cybertek.com  Method : ProjectController.add(..) - Results : project/add 
+[INFO ] 2021-02-15 14:16:11.510 [https-jsse-nio-8443-exec-7] LoggingAspect - Before ( User : manager@cybertek.com  Method : ProjectController.manager(..) - Parameters : [{}] 
+[INFO ] 2021-02-15 14:16:11.723 [https-jsse-nio-8443-exec-7] PerformanceAspect - Time taken to execute:73 ms ( Method : TaskServiceImpl.totalCompletedTasks(..) - Parameters : [OVP-001] 
+[INFO ] 2021-02-15 14:16:11.758 [https-jsse-nio-8443-exec-7] PerformanceAspect - Time taken to execute:34 ms ( Method : TaskServiceImpl.totalNonCompletedTasks(..) - Parameters : [OVP-001] 
+[INFO ] 2021-02-15 14:16:11.792 [https-jsse-nio-8443-exec-7] PerformanceAspect - Time taken to execute:34 ms ( Method : TaskServiceImpl.totalCompletedTasks(..) - Parameters : [OVP-002] 
+[INFO ] 2021-02-15 14:16:11.825 [https-jsse-nio-8443-exec-7] PerformanceAspect - Time taken to execute:33 ms ( Method : TaskServiceImpl.totalNonCompletedTasks(..) - Parameters : [OVP-002] 
+[INFO ] 2021-02-15 14:16:11.825 [https-jsse-nio-8443-exec-7] PerformanceAspect - Time taken to execute:315 ms ( Method : ProjectServiceImpl.listAllProjectDetails() - Parameters : [] 
+[INFO ] 2021-02-15 14:16:11.825 [https-jsse-nio-8443-exec-7] LoggingAspect - AfterReturning ( User : manager@cybertek.com  Method : ProjectController.manager(..) - Results : manager/projects 
+[INFO ] 2021-02-15 14:16:40.554 [https-jsse-nio-8443-exec-3] LoggingAspect - Before ( User : manager@cybertek.com  Method : TaskController.add(..) - Parameters : [{}] 
+[INFO ] 2021-02-15 14:16:40.834 [https-jsse-nio-8443-exec-3] PerformanceAspect - Time taken to execute:277 ms ( Method : TaskServiceImpl.listAllTasks() - Parameters : [] 
+[INFO ] 2021-02-15 14:16:40.975 [https-jsse-nio-8443-exec-3] PerformanceAspect - Time taken to execute:69 ms ( Method : ProjectServiceImpl.listAllProjects() - Parameters : [] 
+[INFO ] 2021-02-15 14:16:40.976 [https-jsse-nio-8443-exec-3] LoggingAspect - AfterReturning ( User : manager@cybertek.com  Method : TaskController.add(..) - Results : task/add 
