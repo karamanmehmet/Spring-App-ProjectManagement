@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="fragments :: page_head"> </head>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- main wrapper -->
+	<!-- ============================================================== -->
+	<div class="dashboard-main-wrapper">
+		<!-- ============================================================== -->
+		<!-- navbar -->
+		<!-- ============================================================== -->
+		<div th:replace="fragments :: page_header"></div>
+		<!-- ============================================================== -->
+		<!-- end navbar -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<div th:replace="fragments :: page_menu"></div>
+		<!-- wrapper  -->
+		<!-- ============================================================== -->
+		<div class="dashboard-wrapper">
+			<div class="dashboard-ecommerce">
+				<div class="container-fluid dashboard-content">
+					<div class="panel-body">
+						<div class="row ">
+							<!-- ============================================================== -->
+							<!-- responsive table -->
+							<!-- ============================================================== -->
+							<div class="col-12">
+								<div class="card">
+									<h5 class="card-header">Task List</h5>
+									<div class="card-body">
+										<div class="table-responsive ">
+											<table class="table">
+												<thead>
+													<tr>
+														<th scope="col">Project </th>
+														<th scope="col">Task Subject</th>
+														<th scope="col">Assigned Employee</th>
+														<th scope="col">Assigned Date</th>
+														<th scope="col">Status</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="task : ${tasks}">
+														<td th:text="${task.project.code +'-'+task.project.name}" />
+														<td th:text="${task.title}" />
+														<td th:text="${task.user.firstname +' '+ task.user.lastname}" />
+														<td th:text="${#temporals.format(task.startDateTime, 'MM/dd/yyyy HH:mm')}" />
+														<td th:text="${task.status.value}" /> </tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- ============================================================== -->
+							<!-- end responsive table -->
+							<!-- ============================================================== -->
+						</div>
+					</div>
+					<!-- end: page -->
+					</section>
+				</div>
+				</section>
+			</div>
+			<!----============================================================== -->
+			<!-- end wrapper  -->
+			<script th:src="@{/assets/vendor/jquery/jquery-3.3.1.min.js}"></script>
+			<!-- bootstap bundle js -->
+			<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+			<!-- slimscroll js -->
+			<script th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+			<!-- main js -->
+			<script th:src="@{/assets/libs/js/main-js.js}"></script>
+</body>
+
+</html>
